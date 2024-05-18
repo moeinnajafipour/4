@@ -179,10 +179,12 @@ public class EmbeddedHistoryConfigInfoPersistServiceImplTest {
         mockList.add(createMockConfigHistoryInfo(0));
         mockList.add(createMockConfigHistoryInfo(1));
         mockList.add(createMockConfigHistoryInfo(2));
-        Mockito.when(databaseOperate.queryMany(anyString(), eq(new Object[] {dataId, group, tenant}),
-                eq(HISTORY_LIST_ROW_MAPPER))).thenReturn(mockList);
+
         int pageSize = 100;
         int pageNo = 2;
+        int startRow = (pageNo - 1) * pageSize;
+        Mockito.when(databaseOperate.queryMany(anyString(), eq(new Object[] {dataId, group, tenant, startRow, pageSize}),
+                eq(HISTORY_LIST_ROW_MAPPER))).thenReturn(mockList);
         //execute & verify
         Page<ConfigHistoryInfo> historyReturn = embeddedHistoryConfigInfoPersistService.findConfigHistory(dataId, group,
                 tenant, pageNo, pageSize);
